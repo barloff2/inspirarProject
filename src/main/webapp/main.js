@@ -2,15 +2,12 @@ class MnHeader extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
 <header>
-<section class="section home-5-bg" id="home">
-<div class="jumbotron jumbotron-fluid bg-white">
-<div class="container">
-<img src="Images/Header.jpg" class="img-fluid" alt="Responsive image">
-</div> 
-</section> 
-<svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
-</svg>
-</div>`;
+	<div class="container d-flex justify-content-center">
+		<img Style="height: 300px" src="Images/Header.jpg" class="img-fluid" alt="Responsive image">		
+	</div>
+	<svg class="bi me-2" width="40" height="12" role="img" aria-label="Bootstrap">
+	</svg>
+</header>;
   }
 }
 
