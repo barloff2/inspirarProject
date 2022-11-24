@@ -35,6 +35,7 @@
 <body>
 	<!-- Javascript Header-->
 	<mn-header></mn-header>
+<<<<<<< Updated upstream
             <!--Card que contiene al formiulario-->
             <!-- Body content  -->
             <div class="row">
@@ -48,6 +49,16 @@
 					<form method="POST" enctype="multipart/form-data"
 						action="ServletUsuario">
 						<!--SecciÃ³n para el numero de identificaciÃ³n-->
+=======
+	<!--Card que contiene al formiulario-->
+	<div class = col-md-13>
+		<div class="col-md-5">
+			<div class="card">
+				<div class="card-header">Crear Usuario</div>
+				<div class="card-body">
+					<form method="POST" enctype="multipart/form-data" action="ServletUsuario">
+						<!--Sección para el numero de identificación-->
+>>>>>>> Stashed changes
 						<div class="form-group">
 							<label for="documento">Numero de documento</label>
 							<!--En el value habÃ­a un echo con el mismo dato: <?php echo $txtID; ?>-->
@@ -108,6 +119,7 @@
 
 						<br>
 						<!--botones-->
+<<<<<<< Updated upstream
 						<!-- <?php echo ($accion=="Seleccionar")?"disabled":""; ?-->
 						<input type="submit" name="accion" value="Agregar" id="accion"
 							class="btn btn-outline-secondary">
@@ -129,6 +141,17 @@
                         </div>
                         <div class="card-body">
                             <table class="table table-bordered">
+=======
+						<input type="submit" name="action" value="Agregar" class="btn btn-secondary">
+						<input type="submit" name="action" value="Modificar" class="btn btn-secondary">
+						<input type="submit" name="action" value="Cancelar" class="btn btn-secondary">
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<table class="table table-bordered">
+>>>>>>> Stashed changes
 				<thead>
 					<tr>
 						<th>Cedula</th>
@@ -150,12 +173,18 @@
 							<!--Botones para seleccionar y borrar  -->
 							<td>
 								<form method="POST" >
+<<<<<<< Updated upstream
 									<input type="hidden" name="txtID" id="txtID"
 										value="${usuario.identificacion}"> <input
 										type="submit" name="accion" value="Seleccionar"
 										class="btn btn-outline-warning btn-sm"> <input type="submit"
 										name="accion" value="Inactivar"
 										class="btn btn-outline-danger btn-sm">
+=======
+									<input type="hidden" name="documento" id="documento" value="${usuario.identificacion}"> 
+									<input type="submit" name="accion" value="Seleccionar" class=" btn-warning btn-sm"> 
+									<input type="submit" name="accion" value="Inactivar" class="btn-outline-danger btn-sm">
+>>>>>>> Stashed changes
 
 								</form>
 							</td>
