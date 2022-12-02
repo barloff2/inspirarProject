@@ -7,7 +7,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<title>Login Inspirar</title>
+		<title>Historia Clínica</title>
 		<!-- Main Header and Footer -->
 		<script type=module src=main.js></script>
 	
@@ -26,15 +26,18 @@
 	<!-- Javascript Header-->
 	<mn-header></mn-header>
 	<!-- Body content  -->
-<div class="card">
-    <br>
-    <nav class="nav justify-content-center bg-secundary">
-    <a><h2>Historia Clínica</h4></a>
-    </nav>
-    <nav class="nav justify-content-center bg-secundary">
-    <a><h3> ${Consultante.nombres} </h3></a>
-    </nav>
-</div>
+
+    <div class="col-md-12">
+        <div class="card">
+          <div class="card-header text-center">
+                            <a><h2>Historia Clínica</h4></a>
+                        </div>
+          <div class="card-body text-center">
+            <a><h3> ${Consultante.nombres} </h3></a>
+          </div>
+   </div>
+      </div>
+  
                     <!--For Each para traer la tabla-->
 <jsp:useBean id="mitabla" scope="application" class="co.com.inspirar.modelo.Consulta" />
      <c:forEach items="${mitabla.}" begin="0" end="${mitabla..}" var="Consulta">
@@ -44,8 +47,11 @@
 <div class="col-md-2">
     <br><br>
     <div class="card text-center">
+      <div class="card-header text-center">
+                            <h4 class="card-title">${Consulante.fecha}</h4>  
+                        </div>
         <div class="card-body">
-            <h4 class="card-title">${Consulante.fecha}</h4>       
+                 
             <a class="btn btn-outline-info" href="MostrarConsulta.jsp" role="button">Ver consulta</a>
         </div>
     </div>
