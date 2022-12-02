@@ -56,6 +56,9 @@ public class ServletUsuario extends HttpServlet {
 		TelefonoDAO telDao = new DAOTelefonoImpl();
 		try {
 			idTelefono = telDao.getIdTelefono(tel);
+			if (idTelefono == 0) {
+				telDao.crearTelefono(tel);
+			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
