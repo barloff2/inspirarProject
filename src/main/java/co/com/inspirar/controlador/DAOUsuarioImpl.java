@@ -15,7 +15,7 @@ public class DAOUsuarioImpl extends Conexion implements UsuarioDAO{
 	public void crearUsuario(Usuario usuario) throws Exception {
 		this.conectar();
 		try {
-			PreparedStatement ps = this.conectar.prepareStatement("INSERT INTO usuario VALUES(?,?,?,?,?,?,?,?,?,?);");
+			PreparedStatement ps = this.conectar.prepareStatement("INSERT INTO Usuario VALUES(?,?,?,?,?,?,?,?,?,?);");
 			//Insertar datos
 			ps.setNull(1, 0);
 			ps.setInt(2, usuario.getIdTelefono());
@@ -54,7 +54,7 @@ public class DAOUsuarioImpl extends Conexion implements UsuarioDAO{
 			this.conectar();
 			System.out.println(this.conectar);
 			Statement st = this.conectar.createStatement();
-			ResultSet rs = st.executeQuery("SELECT * FROM usuario;");
+			ResultSet rs = st.executeQuery("SELECT * FROM Usuario;");
 			while(rs.next()) {
 				Usuario usuario = new Usuario();
 				usuario.setIdTelefono(rs.getInt("id_telefono"));
@@ -91,8 +91,9 @@ public class DAOUsuarioImpl extends Conexion implements UsuarioDAO{
 		int rspta = 0;
 		try {
 			Statement st = this.conectar.createStatement();
-			String querySql = "SELECT id_rol FROM usuario WHERE correo_usuario=+'"+ correo +"' AND password_usuario='" + password +"'"; 
+			String querySql = "SELECT id_rol FROM Usuario WHERE correo_usuario=+'"+ correo +"' AND password_usuario='" + password +"'"; 
 			ResultSet rs = st.executeQuery(querySql);
+			System.out.println(rs + "result set");
 			while(rs.next()) {
 				rspta=rs.getInt("id_rol");
 			}

@@ -36,7 +36,6 @@ public class ServletLogin extends HttpServlet {
 		Usuario user = new Usuario();
 		user.setCorreo(username);
 		user.setPassword(password);
-		
 		UsuarioDAO userDao = new DAOUsuarioImpl();
 		
 		try {
