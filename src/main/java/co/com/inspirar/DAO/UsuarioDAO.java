@@ -13,5 +13,4 @@ public interface UsuarioDAO {
     
     public void mostrarUsuario() throws Exception;
     
-    public int validarLogin(String correo, String password) throws Exception;
 }

@@ -27,6 +27,8 @@
 			int rspta = Integer.parseInt(request.getParameter("rspta"));
 			if(rspta == 0) {
 				mensaje = "Error: usuario o clave incorrecta";
+			} else {
+				mensaje = "Volver a intentar más tarde.";
 			}
 		}
 	%>
@@ -46,8 +48,7 @@
 				  </div>
 				  <div class="col-md-6 col-lg-7 d-flex align-items-center">
 					<div class="card-body p-4 p-lg-5 text-black">
-	  
-					  <form method="post" action="ServletLogin">
+					  <form method="post" action="manage">
 	  
 						<div class="d-flex align-items-center mb-3 pb-1">
 						  <span class="h1 fw-bold mb-0"><img src="Images/Logo.jpeg" class="img-fluid" alt="Responsive image"
@@ -67,7 +68,7 @@
 						</div>
 	  
 						<div class="pt-1 mb-4">
-						  <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
+						  <input class="btn btn-dark btn-lg btn-block" type="submit" name="accion" value="Login">
 						</div>
 						<p style="color: red"><%=mensaje %></p>
 					  </form>

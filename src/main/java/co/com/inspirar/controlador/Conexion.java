@@ -10,7 +10,7 @@ public class Conexion {
     private final String URL = "jdbc:mysql://localhost:33060/Inspirar";
     private final String user = "?user=root";
     private final String passwd = "&password=inspirar123*";
-    private final String noSSl = "&useSSL=false";
+    private final String noSSl = "useSSL=false";
 
     public void conectar() {
         try {

@@ -6,7 +6,9 @@ import java.util.List;
 import java.sql.*;
 
 import co.com.inspirar.DAO.UsuarioDAO;
+import co.com.inspirar.modelo.Rol;
 import co.com.inspirar.modelo.Usuario;
+import co.com.inspirar.modelo.UsuarioRol;
 
 public class DAOUsuarioImpl extends Conexion implements UsuarioDAO{
 
@@ -15,18 +17,17 @@ public class DAOUsuarioImpl extends Conexion implements UsuarioDAO{
 	public void crearUsuario(Usuario usuario) throws Exception {
 		this.conectar();
 		try {
-			PreparedStatement ps = this.conectar.prepareStatement("INSERT INTO Usuario VALUES(?,?,?,?,?,?,?,?,?,?);");
+			PreparedStatement ps = this.conectar.prepareStatement("INSERT INTO Usuario VALUES(?,?,?,?,?,?,?,?);");
 			//Insertar datos
 			ps.setNull(1, 0);
 			ps.setInt(2, usuario.getIdTelefono());
-			ps.setString(3, usuario.getNombres());
-			ps.setString(4, usuario.getApellidos());
-			ps.setString(5, usuario.getCorreo());
-			ps.setString(6, usuario.getPassword());
+			ps.setString(3, usuario.getIdentificacion());
+			ps.setString(4, usuario.getNombres());
+			ps.setString(5, usuario.getApellidos());
+			ps.setString(6, usuario.getCorreo());
 			ps.setString(7, usuario.getTarjetaProf());
 			ps.setString(8, usuario.getReTHUS());
-			ps.setString(9, usuario.getIdentificacion());
-			ps.setInt(10, usuario.getIdRol());
+			
 			ps.execute();
 			
 			ps.close();
@@ -61,11 +62,9 @@ public class DAOUsuarioImpl extends Conexion implements UsuarioDAO{
 				usuario.setNombres(rs.getString("nombres_usuario"));
 				usuario.setApellidos(rs.getString("apellidos_usuario"));
 				usuario.setCorreo(rs.getString("correo_usuario"));
-				usuario.setPassword(rs.getString("password_usuario"));
 				usuario.setTarjetaProf(rs.getString("tarjetaProf_usuario"));
 				usuario.setReTHUS(rs.getString("reTHUS_usuario"));
 				usuario.setIdentificacion(rs.getString("documento_usuario"));
-				usuario.setIdRol(rs.getInt("id_rol"));
 				
 				lista.add(usuario);
 			}
@@ -83,29 +82,6 @@ public class DAOUsuarioImpl extends Conexion implements UsuarioDAO{
 	public void mostrarUsuario() throws Exception {
 		this.conectar();
 		
-	}
-
-	@Override
-	public int validarLogin(String correo, String password) throws Exception {
-		this.conectar();
-		int rspta = 0;
-		try {
-			Statement st = this.conectar.createStatement();
-			String querySql = "SELECT id_rol FROM Usuario WHERE correo_usuario=+'"+ correo +"' AND password_usuario='" + password +"'"; 
-			ResultSet rs = st.executeQuery(querySql);
-			System.out.println(rs + "result set");
-			while(rs.next()) {
-				rspta=rs.getInt("id_rol");
-			}
-			rs.close();
-			st.close();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}finally {
-			this.cerrarConexion();
-		}
-		
-		return rspta;
 	}
 	
 	

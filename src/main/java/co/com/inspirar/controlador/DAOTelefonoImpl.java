@@ -20,13 +20,12 @@ public class DAOTelefonoImpl  extends Conexion implements TelefonoDAO{
 	public void crearTelefono(Telefono telefono) throws Exception {
 		this.conectar();
 		try {
-			PreparedStatement ps = this.conectar.prepareStatement("INSERT INTO telefono VALUES(?,?,?);");
+			PreparedStatement ps = this.conectar.prepareStatement("INSERT INTO Telefono VALUES(?,?,?);");
 			//Insertar datos
 			ps.setNull(1, 0);
 			ps.setString(2, telefono.getTelFijo());
 			ps.setString(3, telefono.getTelCel());
 			ps.execute();
-			
 			ps.close();
 			//setSaldo(ingreso.getIngreso());
 		} catch (SQLException e) {
@@ -50,10 +49,10 @@ public class DAOTelefonoImpl  extends Conexion implements TelefonoDAO{
 		int id = 0;
 		try {
 			Statement st = this.conectar.createStatement();
-			String querySql = "SELECT id_telefono FROM telefono WHERE fijo_telefono='" + telefono.getTelFijo() + "' AND celular_telefono='" + telefono.getTelCel() + "'";
+			String querySql = "SELECT id_telefono FROM Telefono WHERE fijo_telefono='" + telefono.getTelFijo() + "' OR celular_telefono='" + telefono.getTelCel() + "'";
 			ResultSet rs = st.executeQuery(querySql);
-			while(rs.next()) {
-				id=rs.getInt("id_telefono");
+			if (rs.next()) {
+				id = rs.getInt("id_telefono");
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

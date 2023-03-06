@@ -49,7 +49,7 @@ public class ServletUsuario extends HttpServlet {
 		String correo = request.getParameter("email");
 		String accion = request.getParameter("accion");
 
-		System.out.println(accion);
+		System.out.println("Acción: " + accion);
 		// Instanciar usuario y telefono
 
 		Telefono tel = new Telefono(telefonoFijo, telefonoCelular);
@@ -58,12 +58,13 @@ public class ServletUsuario extends HttpServlet {
 			idTelefono = telDao.getIdTelefono(tel);
 			if (idTelefono == 0) {
 				telDao.crearTelefono(tel);
+				idTelefono = telDao.getIdTelefono(tel);
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 
-		Usuario user = new Usuario(2, documento, idTelefono, nombres, apellidos, password, correo, tarProf, reTHUS);
+		Usuario user = new Usuario(documento, idTelefono, nombres, apellidos, correo, tarProf, reTHUS);
 		UsuarioDAO userDao = new DAOUsuarioImpl();
 
 		/*switch (accion) {
@@ -93,7 +94,7 @@ public class ServletUsuario extends HttpServlet {
 	}
 	
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Usuario> usuarios = new ArrayList<Usuario>();
 		try {
 			usuarios = userDao.mostrarUsuarios();
@@ -101,8 +102,8 @@ public class ServletUsuario extends HttpServlet {
 			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());
 		}
-		req.setAttribute("usuarios", usuarios);
-		req.getRequestDispatcher("/Usuario.jsp").forward(req, resp);
+		request.setAttribute("usuarios", usuarios);
+		request.getRequestDispatcher("/Usuario.jsp").forward(request, response);
 	}
 
 }

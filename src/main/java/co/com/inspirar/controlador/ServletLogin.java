@@ -6,14 +6,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import co.com.inspirar.DAO.UsuarioDAO;
+import co.com.inspirar.DAO.UsuarioRolDAO;
 import co.com.inspirar.modelo.Usuario;
+import co.com.inspirar.modelo.UsuarioRol;
 
 /**
  * Servlet implementation class ServletLogin
  */
-@WebServlet("/ServletLogin")
+@WebServlet(name = "ServletLogin", urlPatterns = {"/manage"})
 public class ServletLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -29,30 +32,67 @@ public class ServletLogin extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int rol = 0;
+		String accion = request.getParameter("accion");	
+		try {
+			if (accion != null) {
+				switch (accion) {
+				case "Login":
+					verificar(request, response);
+					break;
+				case "Logout":
+					cerrarSesion(request, response);
+					break;
+				default:
+					response.sendRedirect("index.jsp");
+					break;
+				}
+			} else {
+				response.sendRedirect("index.jsp");
+			}
+		} catch (Exception e) {
+			try {
+				this.getServletConfig().getServletContext().getRequestDispatcher("/index.jsp?rspta=2").forward(request, response);
+			} catch (Exception ex) {
+				System.out.println("Error " + ex.getMessage());
+			}
+		}
+	}
+
+	private void cerrarSesion(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		HttpSession session = request.getSession();
+		session.setAttribute("usuario", null);
+		session.invalidate();
+		response.sendRedirect("index.jsp");
+	}
+
+	private void verificar(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session;
+		Usuario user = new Usuario();
+		UsuarioRol userRol = new UsuarioRol();
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		
-		Usuario user = new Usuario();
 		user.setCorreo(username);
-		user.setPassword(password);
-		UsuarioDAO userDao = new DAOUsuarioImpl();
-		
+		userRol.setClave_usuario(password);
+		UsuarioRolDAO userRolDao = new DAOUsuarioRolImpl();
 		try {
-			rol = userDao.validarLogin(username, password);
+			userRol = userRolDao.validarLogin(userRol, user.getCorreo());
+			if (userRol != null && userRol.getRol().getTipo_rol().equals("administrador")) {
+				session = request.getSession();
+				session.setAttribute("Administrador", userRol.getRol().getTipo_rol());
+				this.getServletConfig().getServletContext().getRequestDispatcher("/Usuario.jsp").forward(request, response);
+			} else if (userRol != null && userRol.getRol().getTipo_rol().equals("psicologo")) {
+				session = request.getSession();
+				session.setAttribute("Psicologo", userRol.getRol().getTipo_rol());
+				this.getServletConfig().getServletContext().getRequestDispatcher("/Consultante.jsp").forward(request, response);
+			} else {
+				response.sendRedirect("index.jsp?rspta=0");
+			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		switch (rol) {
-			case 1 :
-				response.sendRedirect("ServletUsuario");
-				break;
-			case 2:
-				response.sendRedirect("Consultante.jsp");
-				break;
-			default:
-				response.sendRedirect("index.jsp?rspta=" + rol);
-				break;
+			try {
+				this.getServletConfig().getServletContext().getRequestDispatcher("/index.jsp?rspta=2").forward(request, response);
+			} catch (Exception ex) {
+				System.out.println("Error " + ex.getMessage());
+			}
 		}
 		
 	}
