@@ -10,7 +10,7 @@ class MnHeader extends HTMLElement {
   </button>
   <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
     <a class="navbar-brand" href="#">Inspirar</a>
-    <form class="form-inline my-2 my-lg-0" method="post" action="/manage">
+    <form class="form-inline my-2 my-lg-0" method="post" action="manage">
       <input class="btn btn-dark btn-lg btn-block" type="submit" name="accion" value="Logout">
     </form>
   </div>

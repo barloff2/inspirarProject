@@ -9,7 +9,7 @@ public class Conexion {
     protected Connection conectar;
     private final String URL = "jdbc:mysql://localhost:3306/Inspirar";
     private final String user = "?user=javadb";
-    private final String passwd = "&password=inspirar123*";
+    private final String passwd = "&password=Inspirar123*";
     private final String noSSl = "useSSL=false";
     
     public Conexion() {
