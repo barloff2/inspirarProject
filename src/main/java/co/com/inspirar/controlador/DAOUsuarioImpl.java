@@ -53,19 +53,24 @@ public class DAOUsuarioImpl extends Conexion implements UsuarioDAO{
 		List<Usuario> lista = new ArrayList<Usuario>();
 		try {
 			this.conectar();
-			System.out.println(this.conectar);
 			Statement st = this.conectar.createStatement();
-			ResultSet rs = st.executeQuery("SELECT * FROM Usuario;");
-			while(rs.next()) {
+			String sql = "select U.cedula_usuario, "
+					+ "U.nombres_usuario, U.apellidos_usuario, C.estado_usuario, "
+					+ "R.tipo_rol FROM usuariorol C "
+					+ "INNER JOIN rol R ON R.id_rol = C.id_rol "
+					+ "INNER JOIN usuario U ON C.id_usuario = U.id_usuario "
+					+ "ORDER BY U.cedula_usuario;";
+			ResultSet rs = st.executeQuery(sql);
+			
+			while (rs.next()) {
 				Usuario usuario = new Usuario();
-				usuario.setIdTelefono(rs.getInt("id_telefono"));
+				usuario.setIdentificacion(rs.getString("cedula_usuario"));
 				usuario.setNombres(rs.getString("nombres_usuario"));
 				usuario.setApellidos(rs.getString("apellidos_usuario"));
-				usuario.setCorreo(rs.getString("correo_usuario"));
-				usuario.setTarjetaProf(rs.getString("tarjetaProf_usuario"));
-				usuario.setReTHUS(rs.getString("reTHUS_usuario"));
-				usuario.setIdentificacion(rs.getString("documento_usuario"));
-				
+				usuario.setUsuRol(new UsuarioRol());
+				usuario.getUsuRol().setRol(new Rol());
+				usuario.getUsuRol().getRol().setTipo_rol(rs.getString("tipo_rol"));
+				usuario.getUsuRol().setEstado_usuario(rs.getBoolean("estado_usuario"));
 				lista.add(usuario);
 			}
 			rs.close();
@@ -79,9 +84,24 @@ public class DAOUsuarioImpl extends Conexion implements UsuarioDAO{
 	}
 
 	@Override
-	public void mostrarUsuario() throws Exception {
+	public Usuario mostrarUsuario(Usuario usuario) throws Exception {
 		this.conectar();
-		
+		Usuario user = null;
+		Statement st = this.conectar.createStatement();
+		String sql = "SELECT * FROM usuario U WHERE U.cedula_usuario = '+"+usuario.getIdentificacion()+"';";
+		ResultSet rs = st.executeQuery(sql);
+		if (rs.next()) {
+			user = new Usuario();
+			user.setId(rs.getInt("id_usuario"));
+			user.setIdentificacion(usuario.getIdentificacion());
+			user.setApellidos(rs.getString("apellidos_usuario"));;
+			user.setIdTelefono(rs.getInt("id_telefono"));
+			user.setNombres(rs.getString("nombres_usuario"));
+			user.setCorreo(rs.getString("correo_usuario"));
+			user.setTarjetaProf(rs.getString("tarjetaProf_usuario"));
+			user.setReTHUS(rs.getString("reTHUS_usuario"));
+		}
+		return user;
 	}
 	
 	

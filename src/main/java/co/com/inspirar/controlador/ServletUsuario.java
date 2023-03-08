@@ -9,11 +9,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import co.com.inspirar.DAO.TelefonoDAO;
 import co.com.inspirar.DAO.UsuarioDAO;
+import co.com.inspirar.DAO.UsuarioRolDAO;
 import co.com.inspirar.modelo.Telefono;
 import co.com.inspirar.modelo.Usuario;
+import co.com.inspirar.modelo.UsuarioRol;
 
 /**
  * Servlet implementation class ServletUsuario
@@ -37,7 +40,7 @@ public class ServletUsuario extends HttpServlet {
 	UsuarioDAO userDao = new DAOUsuarioImpl();
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		int idTelefono = 0;
+		/*int idTelefono = 0;
 		String documento = request.getParameter("documento");
 		String nombres = request.getParameter("nombres");
 		String apellidos = request.getParameter("apellidos");
@@ -47,12 +50,43 @@ public class ServletUsuario extends HttpServlet {
 		String tarProf = request.getParameter("tarProf");
 		String reTHUS = request.getParameter("reTHUS");
 		String correo = request.getParameter("email");
+		
+		*/
 		String accion = request.getParameter("accion");
-
-		System.out.println("Acción: " + accion);
+		switch (accion) {
+		case "Login":
+			listarUsuarios(request, response);
+			break;
+		case "Seleccionar":
+			HttpSession session;
+			String documento = request.getParameter("documento");
+			Usuario user = new Usuario();
+			UsuarioRol userRol = new UsuarioRol();
+			user.setIdentificacion(documento);
+			try {
+				user = userDao.mostrarUsuario(user);
+				UsuarioRolDAO userRolDao = new DAOUsuarioRolImpl();
+				userRol = userRolDao.obtenerRol(user);
+				
+				if (user == null || userRol == null) {
+					response.sendRedirect("AgregarUsuario.jsp?rspta=0");
+				}
+			} catch (Exception e) {
+				System.out.println("Error" + e.getMessage());
+			}
+			session = request.getSession();
+			session.setAttribute("Administrador");
+			this.getServletConfig().getServletContext()
+				.getRequestDispatcher("/AgregarUsuario.jsp").forward(request, response);
+			break;
+		case "Inactivar":
+			break;
+		default:
+			break;
+		}
 		// Instanciar usuario y telefono
 
-		Telefono tel = new Telefono(telefonoFijo, telefonoCelular);
+		/*Telefono tel = new Telefono(telefonoFijo, telefonoCelular);
 		TelefonoDAO telDao = new DAOTelefonoImpl();
 		try {
 			idTelefono = telDao.getIdTelefono(tel);
@@ -64,8 +98,8 @@ public class ServletUsuario extends HttpServlet {
 			System.out.println(e.getMessage());
 		}
 
-		Usuario user = new Usuario(documento, idTelefono, nombres, apellidos, correo, tarProf, reTHUS);
-		UsuarioDAO userDao = new DAOUsuarioImpl();
+		//Usuario user = new Usuario(documento, idTelefono, nombres, apellidos, correo, tarProf, reTHUS);
+		
 
 		/*switch (accion) {
 		case "Agregar":
@@ -93,17 +127,18 @@ public class ServletUsuario extends HttpServlet {
 
 	}
 	
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Usuario> usuarios = new ArrayList<Usuario>();
+	private void listarUsuarios(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<Usuario> usuarios = null;
+		UsuarioDAO userDao = new DAOUsuarioImpl();
 		try {
 			usuarios = userDao.mostrarUsuarios();
+			request.setAttribute("usuarios", usuarios);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.out.println(e.getMessage());
+			response.sendRedirect("Usuario.jsp");
 		}
-		request.setAttribute("usuarios", usuarios);
-		request.getRequestDispatcher("/Usuario.jsp").forward(request, response);
+		this.getServletConfig().getServletContext()
+			.getRequestDispatcher("/Usuario.jsp").forward(request, response);
 	}
+
 
 }

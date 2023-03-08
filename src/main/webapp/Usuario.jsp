@@ -3,8 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%
-	if(session.getAttribute("Administrador") != null) {
-		
+if (session.getAttribute("Administrador") != null) {
 %>
 <!DOCTYPE html>
 <html lang="">
@@ -13,7 +12,7 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Creaci髇 de Usuarios</title>
+<title>Creaci&#243n de Usuarios</title>
 <!-- Main Header and Footer -->
 <script type=module src=main.js></script>
 
@@ -32,147 +31,90 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
 	crossorigin="anonymous"></script>
+<!-- datatables -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<link href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.css">
+<script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.js"></script>
 
+<!-- CSS datatables -->
+<link 
+	rel="stylesheet"
+	href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css">
 </head>
 
-<body>
+<body class="m-0 vh-100 row justify-content-center align-items-center">
 	<!-- Javascript Header-->
 	<mn-header></mn-header>
-	<!--Card que contiene al formiulario-->
 	<!-- Body content  -->
+	<div>
+		<input name="agregar" id="agregar" class="btn btn-dark" type="button"
+			value="Agregar" onclick="location.href='AgregarUsuario.jsp';" />
+	</div>
 	<div class="row">
-		<div class="col-sm-6">
-			<div class="card">
-				<div class="card-header">Crear Usuarios</div>
-				<div class="card-body">
-
-					<form method="POST" enctype="multipart/form-data"
-						action="ServletUsuario">
-						<!--Secci贸n para el numero de identificaci贸n-->
-						<div class="form-group">
-							<label for="documento">Numero de documento</label>
-							<!--En el value hab铆a un echo con el mismo dato: <?php echo $txtID; ?>-->
-							<input type="text" required class="form-control" value=""
-								name="documento" id="documento"
-								placeholder="N鷐ero de documento">
-						</div>
-						<!--Secci贸n para el Nombre-->
-						<div class="form-group">
-							<label for="nombres">Nombres</label> <input type="text" required
-								class="form-control" value="" name="nombres" id="nombres"
-								placeholder="Nombres Completos">
-						</div>
-						<div class="form-group">
-							<label for="apellidos">Apellidos</label> <input type="text"
-								required class="form-control" value="" name="apellidos"
-								id="apellidos" placeholder="Apellidos Completos">
-						</div>
-						<!--Secci贸n para el Contrase帽a-->
-						<div class="form-group">
-							<label for="password">Contrase馻</label> <input type="password"
-								required class="form-control" value="" name="password"
-								id="password" placeholder="Contrase馻">
-						</div>
-						<!--Secci贸n para el Tel閒ono Fijo-->
-						<div class="form-group">
-							<label for="telefonoFijo">Tel閒ono Fijo</label> <input
-								type="text" required class="form-control" value=""
-								name="telefonoFijo" id="telefonoFijo"
-								placeholder="Tel閒ono Fijo">
-						</div>
-						<!--Secci贸n para el Tel閒ono Celular-->
-						<div class="form-group">
-							<label for="telefonoCelular">Tel閒ono Celular</label> <input
-								type="text" required class="form-control" value=""
-								name="telefonoCelular" id="telefonoCelular"
-								placeholder="Tel閒ono Celular">
-						</div>
-						<!--Secci贸n para la tarjeta profesional-->
-						<div class="form-group">
-							<label for="tarProf">Tarjeta Profesional</label> <input
-								type="text" required class="form-control" value=""
-								name="tarProf" id="tarProf"
-								placeholder="N鷐ero Tarjeta Profesional">
-						</div>
-						<!--Secci贸n para el ReTHUS-->
-						<div class="form-group">
-							<label for="reTHUS">ReTHUS</label> <input type="text" required
-								class="form-control" value="" name="reTHUS" id="reTHUS"
-								placeholder="ReTHUS">
-						</div>
-						<!--Secci贸n para el correo-->
-						<div class="form-group">
-							<label for="email">Correo Electr髇ico</label> <input type="email"
-								required class="form-control" value="" name="email" id="email"
-								placeholder="Correo Electr髇ico">
-						</div>
-
-						<br>
-						<!--botones-->
-						<!-- <?php echo ($accion=="Seleccionar")?"disabled":""; ?-->
-						<input type="submit" name="accion" value="Agregar" id="accion"
-							class="btn btn-outline-secondary">
-						<!-- <?php echo ($accion=="Seleccionar")?"disabled":""; ?-->
-						<input type="submit" name="accion" value="Modificar" id="accion"
-							class="btn btn-outline-secondary">
-						<!-- <?php echo ($accion=="Seleccionar")?"disabled":""; ?-->
-						<input type="submit" name="accion" value="Cancelar" id="accion"
-							class="btn btn-outline-secondary">
-					</form>
-				</div>
-			</div>
-		</div>
-		<!--New Div for Table-->
-		<div class="col-sm-6">
-			<div class="card">
-				<div class="card-header">Usuarios</div>
-				<div class="card-body">
-					<table class="table table-bordered">
-						<thead>
+		<div class="card justify-content-center">
+			<div class="card-header text-center">Usuarios</div>
+			<div class="card-body justify-content-center">
+				<table id="usuarios" class="display" style="width:100%">
+					<thead class="thead-dark">
+						<tr>
+							<th>#</th>
+							<th>Cedula</th>
+							<th>Nombre</th>
+							<th>Estado</th>
+							<th>Rol</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach var="usuario" items="${usuarios}" varStatus="iteracion">
 							<tr>
-								<th>Cedula</th>
-								<th>Nombre</th>
-								<th>Acciones</th>
+								<td>${iteracion.index +1}</td>
+								<td>${usuario.identificacion}</td>
+								<td>${usuario.nombres} ${usuario.apellidos}</td>
+								<c:if test="${usuario.usuRol.estado_usuario == false}">
+									<td><span class="badge bg-info active">Usuario
+											Inactivo</span></td>
+								</c:if>
+								<c:if test="${usuario.usuRol.estado_usuario == true}">
+									<td><span class="badge bg-success active">Usuario
+											Activo</span></td>
+								</c:if>
+								<td>${usuario.usuRol.rol.tipo_rol}</td>
+								<!--Botones para seleccionar y borrar  -->
+								<td>
+									<form method="POST" action="ServletUsuario">
+										<input type="hidden" name="documento" id="documento"
+											value="${usuario.identificacion}"> <input
+											type="submit" name="accion" value="Seleccionar"
+											class="btn btn-outline-warning btn-sm "> <input
+											type="submit" name="accion" value="Inactivar"
+											class="btn btn-outline-danger btn-sm mr-2">
+
+									</form>
+								</td>
 							</tr>
-						</thead>
-						<!-- For Each para traer la tabla-->
-						<jsp:useBean id="mitabla" scope="application"
-							class="co.com.inspirar.modelo.Usuario" />
-						<tbody>
-
-							<c:forEach var="usuario" items="${usuarios}">
-								<tr>
-									<td><c:out value="${usuario.identificacion}" /></td>
-									<td><c:out value="${usuario.nombres} ${usuario.apellidos}" /></td>
-
-
-									<!--Botones para seleccionar y borrar  -->
-									<td>
-										<form method="POST">
-											<input type="hidden" name="txtID" id="txtID"
-												value="${usuario.identificacion}"> <input
-												type="submit" name="accion" style="float: right;"
-												value="Seleccionar" class="btn btn-outline-warning btn-sm ">
-											<input type="submit" name="accion" style="float: right;"
-												value="Inactivar" class="btn btn-outline-danger btn-sm mr-2">
-
-										</form>
-									</td>
-							</c:forEach>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+						</c:forEach>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>
+	<script>
+		$(document).ready(function() {
+		    $('#usuarios').DataTable({
+		    	scrollY: '50vh',
+		    	scrollCollapse: true,
+		    	paging: false,
+		    });
+		});
+	</script>
 	<!-- JavaScript footer -->
 	<mn-footer></mn-footer>
 </body>
 
 </html>
 <%
-	}else {
-		response.sendRedirect("index.jsp");
-	}
+} else {
+response.sendRedirect("index.jsp");
+}
 %>

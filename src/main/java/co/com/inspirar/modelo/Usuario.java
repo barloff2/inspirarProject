@@ -2,6 +2,7 @@ package co.com.inspirar.modelo;
 
 public class Usuario {
 	
+	private int id = 0;
     private String identificacion = "";
     private int idTelefono = 0;
     private String nombres = "";
@@ -9,21 +10,24 @@ public class Usuario {
     private String correo = "";
     private String tarjetaProf = "";
     private String reTHUS = "";
+    private UsuarioRol usuRol = new UsuarioRol();
 
     public Usuario() {
 
     }
 
-    public Usuario(String identificacion, int telefono, String nombres, String apellidos, 
-    		String correo, String tarjetaProf, String reTHUS) {
+    public Usuario(int id, String identificacion, int telefono, String nombres, String apellidos, 
+    		String correo, String tarjetaProf, String reTHUS, UsuarioRol usuRol) {
 
-        this.identificacion = identificacion;
+        this.id = id;
+    	this.identificacion = identificacion;
         this.idTelefono = telefono;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.correo = correo;
         this.tarjetaProf = tarjetaProf;
         this.reTHUS = reTHUS;
+        this.usuRol = usuRol;
     }
 
     public int getIdTelefono() {
@@ -45,8 +49,6 @@ public class Usuario {
     public String getApellidos() {
         return apellidos;
     }
-
-
 
     public String getCorreo() {
         return correo;
@@ -84,4 +86,22 @@ public class Usuario {
     public void setReTHUS(String reTHUS) {
         this.reTHUS = reTHUS;
     }
+
+	public UsuarioRol getUsuRol() {
+		return usuRol;
+	}
+
+	public void setUsuRol(UsuarioRol usuRol) {
+		this.usuRol = usuRol;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+    
 }

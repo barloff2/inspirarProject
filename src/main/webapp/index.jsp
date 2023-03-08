@@ -33,8 +33,6 @@
 		}
 	%>
 <body>
-	<!-- Javascript Header-->
-	<mn-header></mn-header>
 	<!-- Body content  -->
 	<section class="vh-100" style="background-color: #61729a;">
 		<div class="container py-5 h-150">

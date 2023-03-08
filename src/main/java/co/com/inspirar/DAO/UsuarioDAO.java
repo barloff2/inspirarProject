@@ -11,6 +11,6 @@ public interface UsuarioDAO {
 
     public void editarUsuario(Usuario usuario) throws Exception;
     
-    public void mostrarUsuario() throws Exception;
+    public Usuario mostrarUsuario(Usuario usuario) throws Exception;
     
 }

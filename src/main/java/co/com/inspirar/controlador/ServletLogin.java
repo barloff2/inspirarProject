@@ -31,6 +31,8 @@ public class ServletLogin extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+    
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String accion = request.getParameter("accion");	
 		try {
@@ -40,6 +42,7 @@ public class ServletLogin extends HttpServlet {
 					verificar(request, response);
 					break;
 				case "Logout":
+					System.out.println("logout");
 					cerrarSesion(request, response);
 					break;
 				default:
@@ -79,7 +82,7 @@ public class ServletLogin extends HttpServlet {
 			if (userRol != null && userRol.getRol().getTipo_rol().equals("administrador")) {
 				session = request.getSession();
 				session.setAttribute("Administrador", userRol.getRol().getTipo_rol());
-				this.getServletConfig().getServletContext().getRequestDispatcher("/Usuario.jsp").forward(request, response);
+				this.getServletConfig().getServletContext().getRequestDispatcher("/ServletUsuario").forward(request, response);
 			} else if (userRol != null && userRol.getRol().getTipo_rol().equals("psicologo")) {
 				session = request.getSession();
 				session.setAttribute("Psicologo", userRol.getRol().getTipo_rol());

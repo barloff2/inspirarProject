@@ -5,6 +5,7 @@ import java.sql.Statement;
 
 import co.com.inspirar.DAO.UsuarioRolDAO;
 import co.com.inspirar.modelo.Rol;
+import co.com.inspirar.modelo.Usuario;
 import co.com.inspirar.modelo.UsuarioRol;
 
 public class DAOUsuarioRolImpl extends Conexion implements UsuarioRolDAO {
@@ -36,6 +37,30 @@ public class DAOUsuarioRolImpl extends Conexion implements UsuarioRolDAO {
 			this.cerrarConexion();
 		}
 		return usu;
+	}
+
+	@Override
+	public UsuarioRol obtenerRol(Usuario user) throws Exception {
+		UsuarioRol userRol = null;
+		this.conectar();
+		try {
+			Statement st = this.conectar.createStatement();
+			String querySql = "SELECT Ur.id_rol, Ur.estado_usuario, R.tipo_rol FROM usuariorol Ur "
+					+ "INNER JOIN rol R ON R.id_rol = Ur.id_rol "
+					+ "WHERE Ur.id_usuario = "+user.getId()+";";
+			ResultSet rs = st.executeQuery(querySql);
+			if (rs.next()) {
+				userRol = new UsuarioRol();
+				userRol.setEstado_usuario(rs.getBoolean("estado_usuario"));
+				userRol.setRol(new Rol());
+				userRol.getRol().setTipo_rol(rs.getString("tipo_rol"));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			this.cerrarConexion();
+		}
+		return userRol;
 	}
 
 }
