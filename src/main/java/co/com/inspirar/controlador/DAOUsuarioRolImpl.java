@@ -1,7 +1,10 @@
 package co.com.inspirar.controlador;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import co.com.inspirar.DAO.UsuarioRolDAO;
 import co.com.inspirar.modelo.Rol;
@@ -62,5 +65,52 @@ public class DAOUsuarioRolImpl extends Conexion implements UsuarioRolDAO {
 		}
 		return userRol;
 	}
+
+	@Override
+	public void asignarRol(Usuario user) throws Exception {
+		this.conectar();
+		int rol = (user.getUsuRol().getRol().getTipo_rol() == "administrador") ? 1 : 2;
+		try {
+			String querySql = "INSERT INTO usuariorol VALUES (?,?,?,?);";
+			PreparedStatement ps = this.conectar.prepareStatement(querySql);
+			ps.setInt(1, user.getId());
+			ps.setInt(2, rol);
+			ps.setBoolean(3, user.getUsuRol().isEstado_usuario());
+			ps.setString(4, user.getUsuRol().getClave_usuario());
+			
+			ps.execute();
+			ps.close();
+		} catch(Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}finally {
+			this.cerrarConexion();
+		}
+		
+	}
+
+	@Override
+	public List<Rol> listarRoles() throws Exception {
+		List<Rol> listaRoles = new ArrayList<Rol>();
+		try {
+			this.conectar();
+			Statement st = this.conectar.createStatement();
+			String querySql = "select R.id_rol, R.tipo_rol FROM rol R;";
+			ResultSet rs = st.executeQuery(querySql);
+			while (rs.next()) {
+				Rol rol = new Rol();
+				rol.setTipo_rol(rs.getString("tipo_rol"));
+				listaRoles.add(rol);
+			}
+			rs.close();
+			st.close();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}finally {
+			this.cerrarConexion();
+		}
+		return listaRoles;
+	}
+	
+	
 
 }

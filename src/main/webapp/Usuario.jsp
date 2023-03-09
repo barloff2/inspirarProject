@@ -47,8 +47,10 @@ if (session.getAttribute("Administrador") != null) {
 	<mn-header></mn-header>
 	<!-- Body content  -->
 	<div>
-		<input name="agregar" id="agregar" class="btn btn-dark" type="button"
-			value="Agregar" onclick="location.href='AgregarUsuario.jsp';" />
+		<form method="POST" action="ServletUsuario">
+			<button type="submit" class="btn btn-success">Agregar Usuario</button>
+			<input name="accion" id="accion" type="hidden" value="Formulario" />
+		</form>
 	</div>
 	<div class="row">
 		<div class="card justify-content-center">

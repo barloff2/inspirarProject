@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%
-if (session.getAttribute("Administrador") != null) {
+	if (session.getAttribute("Administrador") != null) {
 %>
 <!DOCTYPE html>
 <html lang="">
@@ -38,8 +38,7 @@ if (session.getAttribute("Administrador") != null) {
     <div>
         <div class="card-header">Crear Usuarios</div>
         <div class="card-body justify-content-center">
-            <form method="POST" enctype="multipart/form-data"
-                action="ServletUsuario">
+            <form method="POST" action="ServletUsuario">
                 <!--SecciÃ³n para el numero de identificaciÃ³n-->
                 <div class="form-group">
                     <label for="documento">N&#250mero de documento</label>
@@ -97,6 +96,15 @@ if (session.getAttribute("Administrador") != null) {
                     <label for="email">Correo Electr&#243nico</label> <input type="email"
                         required class="form-control" value="" name="email" id="email"
                         placeholder="Correo Electr&#243nico">
+                </div>
+                <div class="form-group">
+                	<label for="email">Rol</label>
+                	<select class="form-control" name="rol" autofocus="" required="">
+                		<option disabled selected> Seleccione un rol </option>
+                		<c:forEach items="${roles}" var="rol">
+                			<option value="${rol.tipo_rol}">${rol.tipo_rol}</option>
+                		</c:forEach>
+                	</select>
                 </div>
                 <br>
                 <!--botones-->

@@ -17,7 +17,8 @@ public class DAOUsuarioImpl extends Conexion implements UsuarioDAO{
 	public void crearUsuario(Usuario usuario) throws Exception {
 		this.conectar();
 		try {
-			PreparedStatement ps = this.conectar.prepareStatement("INSERT INTO Usuario VALUES(?,?,?,?,?,?,?,?);");
+			String querySql = "INSERT INTO Usuario VALUES(?,?,?,?,?,?,?,?);";
+			PreparedStatement ps = this.conectar.prepareStatement(querySql);
 			//Insertar datos
 			ps.setNull(1, 0);
 			ps.setInt(2, usuario.getIdTelefono());
@@ -29,7 +30,6 @@ public class DAOUsuarioImpl extends Conexion implements UsuarioDAO{
 			ps.setString(8, usuario.getReTHUS());
 			
 			ps.execute();
-			
 			ps.close();
 			//setSaldo(ingreso.getIngreso());
 		} catch (SQLException e) {
@@ -54,13 +54,13 @@ public class DAOUsuarioImpl extends Conexion implements UsuarioDAO{
 		try {
 			this.conectar();
 			Statement st = this.conectar.createStatement();
-			String sql = "select U.cedula_usuario, "
+			String querySql = "select U.cedula_usuario, "
 					+ "U.nombres_usuario, U.apellidos_usuario, C.estado_usuario, "
 					+ "R.tipo_rol FROM usuariorol C "
 					+ "INNER JOIN rol R ON R.id_rol = C.id_rol "
 					+ "INNER JOIN usuario U ON C.id_usuario = U.id_usuario "
 					+ "ORDER BY U.cedula_usuario;";
-			ResultSet rs = st.executeQuery(sql);
+			ResultSet rs = st.executeQuery(querySql);
 			
 			while (rs.next()) {
 				Usuario usuario = new Usuario();
@@ -88,8 +88,8 @@ public class DAOUsuarioImpl extends Conexion implements UsuarioDAO{
 		this.conectar();
 		Usuario user = null;
 		Statement st = this.conectar.createStatement();
-		String sql = "SELECT * FROM usuario U WHERE U.cedula_usuario = '+"+usuario.getIdentificacion()+"';";
-		ResultSet rs = st.executeQuery(sql);
+		String querySql = "SELECT * FROM usuario U WHERE U.cedula_usuario = '+"+usuario.getIdentificacion()+"';";
+		ResultSet rs = st.executeQuery(querySql);
 		if (rs.next()) {
 			user = new Usuario();
 			user.setId(rs.getInt("id_usuario"));
